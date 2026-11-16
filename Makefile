@@ -2,6 +2,7 @@ PYTHON = venv/bin/python
 PIP = venv/bin/pip
 PREDICT = predict.py
 TRAIN = train.py
+BONUS = bonus.py
 
 all:
 	@echo "--- PROYECTO FT_LINEAR_REGRESSION ---"
@@ -23,11 +24,11 @@ venv:
 # train: venv
 # 	$(PYTHON) $(TRAIN)
 
-# predict: venv
-# 	$(PYTHON) $(PREDICT)
+predict: venv
+	$(PYTHON) $(PREDICT)
 
 bonus: venv
-	$(PYTHON) $(PREDICT) --grafic
+	$(PYTHON) $(BONUS)
 
 clean:
 	rm -rf __pycache__ .vscode theta.json venv

@@ -1,9 +1,12 @@
 import argparse
 import sys
+import csv
+
+THETA_FILEPATH = "theta.json"
+CSV_FILEPATH = "data.csv"
 
 def print_box(*lines):
     str_lines = [str(line) for line in lines]
-
     text_lines = [l for l in str_lines if l != "---"]
     max_len = max(len(line) for line in text_lines) if text_lines else 0
     
@@ -44,12 +47,44 @@ def CheckImput():
         sys.exit(1)
     except InvalidMielleageError as e:
         print(f"{e}")
-        return(CheckImput())
+        return CheckImput()
 
 def parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument("--grafic","-g",
     action="store_true",
     help="Display the graph with the scatter plot and the regression line (Bonus).")
-    return(parser.parse_args())
+    return parser.parse_args()
     
+def load_csv():
+    x_data = []
+    y_data = []
+    try:
+        with open(CSV_FILEPATH, mode='r', encoding='utf-8') as file:
+            reader = csv.DictReader(file)
+            
+            expected_headers = {'km', 'price'}
+            actual_headers = set(reader.fieldnames) if reader.fieldnames else set()
+            
+            if actual_headers != expected_headers:
+                raise ValueError(f"Invalid headers. Expected exactly: {expected_headers}, but found: {actual_headers}")
+            
+            for line_num, row in enumerate(reader, start=2):
+                if len(row) != 2:
+                    raise ValueError(f"Invalid format at line {line_num}: expected 2 values ('km', 'price'), but found {len(row)}.")
+                try:
+                    x_val = float(row['km'])
+                    y_val = float(row['price'])
+                    
+                    x_data.append(x_val)
+                    y_data.append(y_val)
+                except (ValueError, TypeError):
+                    raise ValueError(f"Invalid format at line {line_num}: expected numbers for 'km' and 'price'.")
+    except FileNotFoundError:
+        print(f"[ERROR] File '{CSV_FILEPATH}' not found.")
+        return [], []
+    except Exception as e:
+        print(f"[CSV FORMAT ERROR]: {e}")
+        return [], []
+        
+    return x_data, y_data
