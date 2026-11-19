@@ -29,8 +29,14 @@ def main():
     if not x_data or not y_data:
         print(f"[ERROR] The data could not be retrieved from data.csv aborting bonus... ")
         sys.exit(1)
-    else:
-        plot_regresion(theta0=theta0, theta1=theta1, x_data=x_data, y_data=y_data)
+    errors = []
+    for km, real_price in zip(x_data, y_data):
+        estimation = theta0 + theta1 * km
+        errors.append(abs(real_price - estimation))
+
+    mae = sum(errors) / len(errors)
+    print(f"Error absoluto medio (MAE): {mae:.2f} €")
+    plot_regresion(theta0=theta0, theta1=theta1, x_data=x_data, y_data=y_data)
 
 if __name__ == "__main__":
     main()

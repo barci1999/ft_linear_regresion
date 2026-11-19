@@ -21,8 +21,8 @@ venv:
 
 # setup: venv
 
-# train: venv
-# 	$(PYTHON) $(TRAIN)
+train: venv
+	$(PYTHON) $(TRAIN)
 
 predict: venv
 	$(PYTHON) $(PREDICT)
