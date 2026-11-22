@@ -56,13 +56,13 @@ def prompt_param(label, default_value, cast_type):
         value = cast_type(raw)
     except ValueError:
         print(f"[ERROR] Invalid value '{raw}' for {label}.")
-        prompt_param(label, default_value, float)
+        return prompt_param(label, default_value, cast_type)
 
     if value <= 0:
         print(f"[ERROR] Invalid value '{raw}' for {label}.")
-        prompt_param(label, default_value, float)
-    return value
+        return prompt_param(label, default_value, cast_type)
 
+    return value
 def main():
     learning_rate = prompt_param("Learning rate", DEFAULT_LEARNING_RATE, float)
     iterations = prompt_param("iteration", DEFAULT_ITERACTIONS, int)
