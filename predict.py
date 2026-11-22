@@ -52,10 +52,14 @@ def get_estimation(theta0, theta1, milleage):
 
 
 def main():
-    args = parse_arguments()
-    milleage = CheckImput()
     theta0, theta1 = get_thetas()
-    estimation = get_estimation(theta0=theta0, theta1=theta1, milleage=milleage)
+    estimation,milleage = 0.0,0.0
+    while estimation <= 0:
+        milleage = CheckImput()
+        estimation = get_estimation(theta0=theta0, theta1=theta1, milleage=milleage)
+        if estimation > 0:
+            break
+        print(f"[INFO] Estimated price ({estimation} €) is not valid (<= 0). Try another mileage.")
     print_box(
         "= RESULTS =",
         "---",
@@ -64,8 +68,6 @@ def main():
         f"theta1: {theta1}",
         f"Estimation price: {estimation} €"
     )
-    if args.grafic:
-        print(f"[BONUS] Please use 'make bonus' (bonus.py) to display the graphical representation.")
 
 
 if __name__ == "__main__":

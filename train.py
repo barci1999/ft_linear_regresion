@@ -56,12 +56,11 @@ def prompt_param(label, default_value, cast_type):
         value = cast_type(raw)
     except ValueError:
         print(f"[ERROR] Invalid value '{raw}' for {label}.")
-        sys.exit(1)
+        prompt_param(label, default_value, float)
 
     if value <= 0:
-        print(f"[ERROR] {label} must be greater than 0.")
-        sys.exit(1)
-
+        print(f"[ERROR] Invalid value '{raw}' for {label}.")
+        prompt_param(label, default_value, float)
     return value
 
 def main():
